@@ -12,6 +12,7 @@
     ],
     "data": [
         "views/state_change_registry_views.xml",
+        "views/account_move_views.xml",
     ],
     "installable": True,
     "application": False,

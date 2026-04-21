@@ -4,6 +4,12 @@ from odoo import fields, models
 class AccountMove(models.Model):
     _inherit = "account.move"
 
+    state_change_registry_ids = fields.One2many(
+        comodel_name="state.change.registry",
+        inverse_name="invoice_id",
+        string="Registros de Cambio de Estado",
+    )
+
     def write(self, vals):
         track_state = "state" in vals
         previous_states = {move.id: move.state for move in self} if track_state else {}
@@ -15,6 +21,9 @@ class AccountMove(models.Model):
         registry_model = self.env["state.change.registry"]
 
         for move in self:
+            if move.partner_id.not_registry_change:
+                continue
+
             previous_state = previous_states.get(move.id)
             new_state = move.state
             if previous_state == new_state:
@@ -29,7 +38,7 @@ class AccountMove(models.Model):
             taxes = move.invoice_line_ids.mapped("tax_ids").mapped("name")
             registry_model.create(
                 {
-                    "name": move.display_name or move.name or move.ref or str(move.id),
+                    "name": move.payment_reference or move.name or move.display_name or str(move.id),
                     "document_type": "invoice",
                     "invoice_id": move.id,
                     "amount": move.amount_total,

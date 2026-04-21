@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_move_form_state_change_registry" model="ir.ui.view">
+        <field name="name">account.move.form.state.change.registry</field>
+        <field name="model">account.move</field>
+        <field name="inherit_id" ref="account.view_move_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@id='other_tab']" position="after">
+                <page
+                    id="state_change_registry_tab"
+                    name="state_change_registry_tab"
+                    string="Registros de Cambio de Estado"
+                >
+                    <field name="state_change_registry_ids" readonly="1">
+                        <list create="0" delete="0">
+                            <field name="change_date"/>
+                            <field name="user_id"/>
+                            <field name="previous_state"/>
+                            <field name="new_state"/>
+                            <field name="amount"/>
+                            <field name="line_count"/>
+                        </list>
+                    </field>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
