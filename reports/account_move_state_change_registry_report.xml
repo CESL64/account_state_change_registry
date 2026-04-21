@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="paperformat_account_state_change_registry" model="report.paperformat">
+        <field name="name">Reporte Registros de Cambio de Estado</field>
+        <field name="default" eval="False"/>
+        <field name="format">A4</field>
+        <field name="page_height">0</field>
+        <field name="page_width">0</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">20</field>
+        <field name="margin_bottom">20</field>
+        <field name="margin_left">12</field>
+        <field name="margin_right">12</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">0</field>
+        <field name="dpi">90</field>
+    </record>
+
+    <record id="action_account_move_state_change_registry_report" model="ir.actions.report">
+        <field name="name">00 - Registros de cambio de estado</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">account_state_change_registry.account_move_state_change_registry_template</field>
+        <field name="report_file">account_state_change_registry.account_move_state_change_registry_template</field>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+        <field name="paperformat_id" ref="paperformat_account_state_change_registry"/>
+        <field name="print_report_name">'Registros de cambio de estado - %s' % (object.display_name or object.name or 'Factura')</field>
+    </record>
+
+    <template id="account_move_state_change_registry_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="web.basic_layout">
+                    <div class="page">
+                        <h3 class="text-center fw-bold">REPORTE DE REGISTRO DE CAMBIOS DE ESTADO</h3>
+                        <table class="table table-sm table-bordered mt-3 table-striped">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th style="font-weight: bold; width: 10%; text-align: center; vertical-align: center; color: white; background-color: #342f2b;">Fecha</th>
+                                    <th style="font-weight: bold; width: 10%; text-align: center; vertical-align: center; color: white; background-color: #342f2b;">Usuario</th>
+                                    <th style="font-weight: bold; width: 10%; text-align: center; vertical-align: center; color: white; background-color: #342f2b;">Estado previo</th>
+                                    <th style="font-weight: bold; width: 10%; text-align: center; vertical-align: center; color: white; background-color: #342f2b;">Estado nuevo</th>
+                                    <th style="font-weight: bold; width: 10%; text-align: center; vertical-align: center; color: white; background-color: #342f2b;">Monto</th>
+                                    <th style="font-weight: bold; width: 10%; text-align: center; vertical-align: center; color: white; background-color: #342f2b;">Cantidad de lineas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr t-foreach="o.state_change_registry_ids" t-as="line">
+                                    <td>
+                                        <span t-field="line.change_date"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="line.user_id"/>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <span t-field="line.previous_state"/>
+                                    </td>
+                                    <td style="text-align: center;">
+                                        <span t-field="line.new_state"/>
+                                    </td>
+                                    <td class="text-right" style="text-align: right;">
+                                        <span t-field="line.amount"/>
+                                    </td>
+                                    <td class="text-right" style="text-align: right;">
+                                        <span class="text-right" style="text-align: right;" t-field="line.line_count"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>
