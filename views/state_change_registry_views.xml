@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_state_change_registry_form_account" model="ir.ui.view">
+        <field name="name">state.change.registry.form.account</field>
+        <field name="model">state.change.registry</field>
+        <field name="inherit_id" ref="state_change_registry.view_state_change_registry_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='document_type']" position="after">
+                <field name="invoice_id" invisible="not invoice_id"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
