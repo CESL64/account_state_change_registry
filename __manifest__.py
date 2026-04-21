@@ -14,6 +14,7 @@
         "views/state_change_registry_views.xml",
         "views/account_move_views.xml",
         "reports/account_move_state_change_registry_report.xml",
+        "reports/account_move_state_change_registry_report_inherit.xml",
     ],
     "installable": True,
     "application": False,
