@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <menuitem
+        id="menu_state_change_registry_report_wizard"
+        name="Registros de Cambio de Estado"
+        parent="account.menu_finance_reports"
+        action="action_state_change_registry_report_wizard"
+        sequence="20"
+    />
+</odoo>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_state_change_registry_report_wizard_form" model="ir.ui.view">
+        <field name="name">state.change.registry.report.wizard.form</field>
+        <field name="model">state.change.registry.report.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Reporte de Registros de Cambio de Estado">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="date_start"/>
+                            <field name="date_end"/>
+                            <field name="company_id"/>
+                        </group>
+                    </group>
+                    <group>
+                        <field name="result_html" nolabel="1" readonly="1" widget="html"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button
+                        name="action_show_records"
+                        type="object"
+                        string="Mostrar registros"
+                        class="btn-primary"
+                    />
+                    <button string="Cerrar" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_state_change_registry_report_wizard" model="ir.actions.act_window">
+        <field name="name">Registros de Cambio de Estado</field>
+        <field name="res_model">state.change.registry.report.wizard</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+</odoo>
