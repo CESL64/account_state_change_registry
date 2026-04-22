@@ -30,23 +30,29 @@ class StateChangeRegistry(models.Model):
         template = self.env.ref(
             "account_state_change_registry.mail_template_invoice_state_change_notification"
         )
-        email_values = {
-            "email_to": ",".join(partners_to_notify.mapped("email")),
-            "recipient_ids": [(6, 0, partners_to_notify.ids)],
-            "email_from": self.env.user.email_formatted or self.env.company.email,
-        }
-        template.send_mail(
-            self.id,
-            force_send=True,
-            email_values=email_values,
+        rendered_mail_values = template._generate_template(
+            [self.id],
+            ("body_html", "subject", "email_from"),
+        ).get(self.id, {})
+        self.invoice_id.message_post(
+            body=rendered_mail_values.get("body_html"),
+            subject=rendered_mail_values.get("subject"),
+            email_from=(
+                rendered_mail_values.get("email_from")
+                or self.env.user.email_formatted
+                or self.env.company.email
+            ),
+            partner_ids=partners_to_notify.ids,
+            message_type="comment",
+            subtype_xmlid="mail.mt_comment",
+            email_layout_xmlid="mail.mail_notification_layout_with_responsible_signature",
         )
 
-        self.invoice_id.message_post(
+        self.message_post(
             body=(
                 "Se envio notificacion por correo para el cambio de estado "
                 f"'{self.previous_state or ''}' -> '{self.new_state or ''}'."
             ),
-            partner_ids=partners_to_notify.ids,
             subtype_xmlid="mail.mt_note",
         )
 
