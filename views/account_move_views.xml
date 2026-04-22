@@ -11,14 +11,22 @@
                     name="state_change_registry_tab"
                     string="Registros de Cambio de Estado"
                 >
-                    <field name="state_change_registry_ids" readonly="1">
-                        <list create="0" delete="0">
+                    <field name="state_change_registry_ids">
+                        <list create="0" delete="0" edit="0">
                             <field name="change_date"/>
                             <field name="user_id"/>
                             <field name="previous_state"/>
                             <field name="new_state"/>
                             <field name="amount"/>
                             <field name="line_count"/>
+                            <field name="mail_sent"/>
+                            <button
+                                name="send_state_change_notification"
+                                type="object"
+                                string="Notificar"
+                                class="btn-link"
+                                invisible="mail_sent"
+                            />
                         </list>
                     </field>
                 </page>
